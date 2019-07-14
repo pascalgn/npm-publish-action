@@ -6,7 +6,7 @@ const { spawn } = require("child_process");
 const { readFile } = require("fs");
 
 async function main() {
-  const dir = process.argv[2] || "/github/workspace";
+  const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
 
   const eventFile =
     process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json";
@@ -21,15 +21,19 @@ async function main() {
     throw new NeutralExitError();
   }
 
+  const commitPattern =
+    process.env.COMMIT_PATTERN || "^(?:Release|Version) (\\S+)";
+
   const { name, email } = eventObj.repository.owner;
 
   const config = {
+    commitPattern,
     tagName: placeholderEnv("TAG_NAME", "v%s"),
     tagMessage: placeholderEnv("TAG_MESSAGE", "v%s"),
     tagAuthor: { name, email }
   };
 
-  await processDirectory(dir, config);
+  await processDirectory(dir, config, eventObj.commits);
 }
 
 function placeholderEnv(name, defaultValue) {
@@ -43,7 +47,7 @@ function placeholderEnv(name, defaultValue) {
   }
 }
 
-async function processDirectory(dir, config) {
+async function processDirectory(dir, config, commits) {
   const packageFile = join(dir, "package.json");
   const packageObj = await readJson(packageFile).catch(() =>
     Promise.reject(
@@ -57,10 +61,22 @@ async function processDirectory(dir, config) {
 
   const { version } = packageObj;
 
+  checkCommit(config, commits, version);
+
   await createTag(dir, config, version);
   await publishPackage(dir, config, version);
 
   console.log("Done.");
+}
+
+function checkCommit(config, commits, version) {
+  for (const commit of commits) {
+    const match = commit.message.match(config.commitPattern);
+    if (match && match[1] === version) {
+      return;
+    }
+  }
+  throw new Error(`No commit found for version: ${version}`);
 }
 
 async function readJson(file) {
@@ -124,8 +140,10 @@ function run(cwd, command, ...args) {
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args, {
       cwd,
-      stdio: ["ignore", "ignore", "inherit"]
+      stdio: ["ignore", "ignore", "pipe"]
     });
+    const buffers = [];
+    proc.stderr.on("data", data => buffers.push(data));
     proc.on("error", () => {
       reject(new Error(`command failed: ${command}`));
     });
@@ -133,6 +151,13 @@ function run(cwd, command, ...args) {
       if (code === 0) {
         resolve(true);
       } else {
+        const stderr = Buffer.concat(buffers)
+          .toString("utf8")
+          .trim();
+        if (stderr) {
+          console.error(`command failed with code ${code}`);
+          console.error(stderr);
+        }
         reject(new ExitError(code));
       }
     });
@@ -154,7 +179,7 @@ if (require.main === module) {
       process.exitCode = 78;
     } else {
       process.exitCode = 1;
-      console.error(e);
+      console.error(e.message || e);
     }
   });
 }

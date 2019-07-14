@@ -14,10 +14,11 @@ workflow "publish to npm on push" {
 
 action "npm publish" {
   uses = "pascalgn/npm-publish-action@master"
-  secrets = ["NPM_AUTH_TOKEN"]
+  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
   env = {
     TAG_NAME = "v%s"
     TAG_MESSAGE = "v%s"
+    COMMIT_PATTERN = "^Release (\\S+)"
   }
 }
 ```
@@ -28,6 +29,7 @@ The following environment variables are supported:
 
 - `TAG_NAME`: The name pattern of the new tag
 - `TAG_MESSAGE`: The message pattern of the new tag
+- `COMMIT_PATTERN`: Pattern that the commit message needs to follow
 - `NPM_AUTH_TOKEN`: The [npm](https://www.npmjs.com/) authentication token
 
 ## License
