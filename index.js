@@ -15,7 +15,7 @@ async function main() {
   const defaultBranch = process.env.DEFAULT_BRANCH || "master";
 
   if (eventObj.ref !== `refs/heads/${defaultBranch}`) {
-    console.error(
+    console.log(
       `Ref ${eventObj.ref} is not the default branch: ${defaultBranch}`
     );
     throw new NeutralExitError();
@@ -73,6 +73,7 @@ function checkCommit(config, commits, version) {
   for (const commit of commits) {
     const match = commit.message.match(config.commitPattern);
     if (match && match[1] === version) {
+      console.log(`Found commit: ${commit.message}`);
       return;
     }
   }
@@ -108,7 +109,7 @@ async function createTag(dir, config, version) {
   );
 
   if (tagExists) {
-    console.error(`Tag already exists: ${tagName}`);
+    console.log(`Tag already exists: ${tagName}`);
     throw new NeutralExitError();
   }
 
@@ -136,7 +137,7 @@ async function publishPackage(dir, config, version) {
 }
 
 function run(cwd, command, ...args) {
-  console.error("Executing:", command, args.join(" "));
+  console.log("Executing:", command, args.join(" "));
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args, {
       cwd,
@@ -155,8 +156,8 @@ function run(cwd, command, ...args) {
           .toString("utf8")
           .trim();
         if (stderr) {
-          console.error(`command failed with code ${code}`);
-          console.error(stderr);
+          console.log(`command failed with code ${code}`);
+          console.log(stderr);
         }
         reject(new ExitError(code));
       }
@@ -179,7 +180,7 @@ if (require.main === module) {
       process.exitCode = 78;
     } else {
       process.exitCode = 1;
-      console.error(e.message || e);
+      console.log(e.message || e);
     }
   });
 }
