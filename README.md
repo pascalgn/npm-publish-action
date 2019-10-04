@@ -4,33 +4,34 @@ GitHub action to automatically publish packages to npm.
 
 ## Usage
 
-Add this to your `.github/main.workflow` file:
+Add a step like this to your workflow:
 
-```
-workflow "publish to npm on push" {
-  on = "push"
-  resolves = ["npm publish"]
-}
-
-action "npm publish" {
-  uses = "pascalgn/npm-publish-action@6fff82ba2c6462bf4f6940168afe65303bbdbd56"
-  secrets = ["GITHUB_TOKEN", "NPM_AUTH_TOKEN"]
-  env = {
-    TAG_NAME = "v%s"
-    TAG_MESSAGE = "v%s"
-    COMMIT_PATTERN = "^Release (\\S+)"
-  }
-}
+```yaml
+- name: Publish if version has been updated
+  uses: pascalgn/npm-publish-action@1.0.1
+  with: # All of theses inputs are optional
+    tag_name: 'v%s'
+    tag__message: 'v%s'
+    commit_pattern: '^Release (\\S+)'
+  env: # More info about the environment variables in the README
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
+    NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
 ```
 
-## Configuration
+You can find a complete workflow example [here](doc/example-workflow.yml).
 
-The following environment variables are supported:
+### Inputs
 
-- `TAG_NAME`: The name pattern of the new tag
-- `TAG_MESSAGE`: The message pattern of the new tag
-- `COMMIT_PATTERN`: Pattern that the commit message needs to follow
-- `NPM_AUTH_TOKEN`: The [npm](https://www.npmjs.com/) authentication token
+These inputs are optional: that means that if you don't enter them, default values will be used and it'll work just fine.
+
+- `tag_name`: the name pattern of the new tag
+- `tag_message`: the message pattern of the new tag
+- `commit_pattern`: pattern that the commit message needs to follow
+
+### Environment variables
+
+- `GITHUB_TOKEN`: this is a token that GitHub generates automatically, you only need to pass it to the action as in the example
+- `NPM_AUTH_TOKEN`: this is the token the action will use to authenticate to [npm](https://npmjs.com). You need to generate one in npm, then you can add it to your secrets (settings -> secrets) so that it can be passed to the action. DO NOT put the token directly in your workflow file.
 
 ## License
 
