@@ -3,9 +3,6 @@ author: pascalgn
 description: Automatically publish new versions to npm
 
 inputs:
-  default_branch:
-    description: The branch to get the new version from.
-    required: false
   commit_pattern:
     description: The pattern that matches version update commits.
     required: false
