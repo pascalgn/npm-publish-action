@@ -11,7 +11,7 @@ Add a step like this to your workflow:
   uses: pascalgn/npm-publish-action@1.0.1
   with: # All of theses inputs are optional
     tag_name: 'v%s'
-    tag__message: 'v%s'
+    tag_message: 'v%s'
     commit_pattern: '^Release (\\S+)'
   env: # More info about the environment variables in the README
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
