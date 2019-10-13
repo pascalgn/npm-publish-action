@@ -1,0 +1,22 @@
+name: Publish to npm
+author: pascalgn
+description: Automatically publish new versions to npm
+
+inputs:
+  commit_pattern:
+    description: The pattern that matches version update commits.
+    required: false
+  tag_name:
+    description: The name of the tag that you want to create for the version.
+    required: false
+  tag_message:
+    description: The message of the tag that you want to create for the version.
+    required: false
+
+runs:
+  using: docker
+  image: Dockerfile
+
+branding:
+  icon: package
+  color: blue
