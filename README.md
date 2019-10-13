@@ -4,21 +4,32 @@ GitHub action to automatically publish packages to npm.
 
 ## Usage
 
-Add a step like this to your workflow:
+Create a new `.github/workflows/npm-publish.yml` file:
 
 ```yaml
-- name: Publish if version has been updated
-  uses: pascalgn/npm-publish-action@1.0.1
-  with: # All of theses inputs are optional
-    tag_name: 'v%s'
-    tag_message: 'v%s'
-    commit_pattern: '^Release (\\S+)'
-  env: # More info about the environment variables in the README
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
-    NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
+name: npm-publish
+on: push # Edit this to change when (and for which branches) the action is triggered
+jobs:
+  npm-publish:
+    name: npm-publish
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@master
+    - name: Set up Node.js
+      uses: actions/setup-node@master
+      with:
+        node-version: 10.0.0
+    - name: Publish if version has been updated
+      uses: pascalgn/npm-publish-action@b18cbc0d02fae5dd352222aae3f1adfc11d356c9
+      with: # All of theses inputs are optional
+        tag_name: "v%s"
+        tag_message: "v%s"
+        commit_pattern: "^Release (\\S+)"
+      env: # More info about the environment variables in the README
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
 ```
-
-You can find a complete workflow example [here](doc/example-workflow.yml).
 
 ### Inputs
 
