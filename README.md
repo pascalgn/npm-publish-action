@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: 10.0.0
     - name: Publish if version has been updated
-      uses: pascalgn/npm-publish-action@b18cbc0d02fae5dd352222aae3f1adfc11d356c9
+      uses: pascalgn/npm-publish-action@51fdb4531e99aac1873764ef7271af448dc42ab4
       with: # All of theses inputs are optional
         tag_name: "v%s"
         tag_message: "v%s"
