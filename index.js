@@ -12,7 +12,7 @@ async function main() {
     process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json";
   const eventObj = await readJson(eventFile);
 
-  const defaultBranch = getEnv('DEFAULT_BRANCH') || "master";
+  const defaultBranch = getEnv("DEFAULT_BRANCH") || "master";
 
   if (eventObj.ref !== `refs/heads/${defaultBranch}`) {
     console.log(
@@ -22,7 +22,7 @@ async function main() {
   }
 
   const commitPattern =
-    getEnv('COMMIT_PATTERN') || "^(?:Release|Version) (\\S+)";
+    getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
 
   const { name, email } = eventObj.repository.owner;
 
@@ -37,7 +37,7 @@ async function main() {
 }
 
 function getEnv(name) {
-  return process.env[name] || process.env['INPUT_' + name.toUpperCase()];
+  return process.env[name] || process.env[`INPUT_${name}`];
 }
 
 function placeholderEnv(name, defaultValue) {
@@ -176,7 +176,7 @@ class ExitError extends Error {
   }
 }
 
-class NeutralExitError extends Error { }
+class NeutralExitError extends Error {}
 
 if (require.main === module) {
   main().catch(e => {
