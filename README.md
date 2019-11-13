@@ -8,7 +8,10 @@ Create a new `.github/workflows/npm-publish.yml` file:
 
 ```yaml
 name: npm-publish
-on: push # Edit this to change when (and for which branches) the action is triggered
+on:
+  push:
+    branches:
+      - master # Change this to your default branch
 jobs:
   npm-publish:
     name: npm-publish
@@ -30,6 +33,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
 ```
+
+Now, when someone changes the version in `package.json` to 1.2.3 and pushes a commit with the message `Release 1.2.3`, the `npm-publish` action will create a new tag `v1.2.3` and publish the package to the npm registry.
 
 ### Inputs
 
