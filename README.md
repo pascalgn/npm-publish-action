@@ -49,6 +49,12 @@ These inputs are optional: that means that if you don't enter them, default valu
 - `GITHUB_TOKEN`: this is a token that GitHub generates automatically, you only need to pass it to the action as in the example
 - `NPM_AUTH_TOKEN`: this is the token the action will use to authenticate to [npm](https://npmjs.com). You need to generate one in npm, then you can add it to your secrets (settings -> secrets) so that it can be passed to the action. DO NOT put the token directly in your workflow file.
 
+## Community
+
+Feel free to share your config files using "npm-publish-action" to inspire others:
+
+- <https://github.com/rzr/fediverse-action/blob/master/.github/workflows/fediverse-action.yml>
+
 ## Related projects
 
 - [version-check](https://github.com/EndBug/version-check) allows to define custom workflows based on version changes
