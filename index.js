@@ -81,7 +81,7 @@ function checkCommit(config, commits, version) {
       return;
     }
   }
-  throw new Error(`No commit found for version: ${version}`);
+  throw new NeutralExitError(`No commit found for version: ${version}`);
 }
 
 async function readJson(file) {
