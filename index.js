@@ -181,7 +181,10 @@ class NeutralExitError extends Error {}
 if (require.main === module) {
   main().catch(e => {
     if (e instanceof NeutralExitError) {
-      process.exitCode = 78;
+      // GitHub removed support for neutral exit code:
+      // https://twitter.com/ethomson/status/1163899559279497217
+      // process.exitCode = 78;
+      process.exitCode = 0;
     } else {
       process.exitCode = 1;
       console.log(e.message || e);
