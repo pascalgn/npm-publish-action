@@ -6,7 +6,10 @@ const { spawn } = require("child_process");
 const { readFile } = require("fs");
 
 async function main() {
-  const dir = getPackageDirectory();
+  const dir =
+    process.env.WORKSPACE ||
+    process.env.GITHUB_WORKSPACE ||
+    "/github/workspace";
 
   const eventFile =
     process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json";
@@ -38,16 +41,6 @@ async function main() {
 
 function getEnv(name) {
   return process.env[name] || process.env[`INPUT_${name}`];
-}
-
-function getPackageDirectory() {
-  const workspace = process.env.GITHUB_WORKSPACE || "/github/workspace";
-  const packageLocation = join(workspace, placeholderEnv("PACKAGE_PATH", "."));
-  if(packageLocation.includes("package.json")){
-    return dirname(packageLocation);
-  }
-
-  return packageLocation;
 }
 
 function placeholderEnv(name, defaultValue) {
@@ -166,9 +159,7 @@ function run(cwd, command, ...args) {
       if (code === 0) {
         resolve(true);
       } else {
-        const stderr = Buffer.concat(buffers)
-          .toString("utf8")
-          .trim();
+        const stderr = Buffer.concat(buffers).toString("utf8").trim();
         if (stderr) {
           console.log(`command failed with code ${code}`);
           console.log(stderr);
