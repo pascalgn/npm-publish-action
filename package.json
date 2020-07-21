@@ -29,5 +29,9 @@
     "rules": {
       "no-console": "off"
     }
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   }
 }

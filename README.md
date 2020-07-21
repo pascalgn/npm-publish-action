@@ -29,7 +29,7 @@ jobs:
         tag_name: "v%s"
         tag_message: "v%s"
         commit_pattern: "^Release (\\S+)"
-        package_path: "."
+        workspace: "."
       env: # More info about the environment variables in the README
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
@@ -44,7 +44,7 @@ These inputs are optional: that means that if you don't enter them, default valu
 - `tag_name`: the name pattern of the new tag
 - `tag_message`: the message pattern of the new tag
 - `commit_pattern`: pattern that the commit message needs to follow
-- `package_path`: custom directory in the case that the package is not in the root.
+- `workspace`: custom workspace directory that contains the `package.json` file
 
 ### Environment variables
 
