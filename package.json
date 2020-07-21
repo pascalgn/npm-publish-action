@@ -9,10 +9,13 @@
     "npm-publish-action": "./index.js"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "mocha tests.js"
   },
   "devDependencies": {
-    "eslint": "^7.5.0"
+    "chai": "^4.2.0",
+    "eslint": "^7.5.0",
+    "mocha": "^8.0.1"
   },
   "eslintConfig": {
     "parserOptions": {

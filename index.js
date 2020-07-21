@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const commitRegex = require("./commit-regex.js");
 const process = require("process");
 const { join } = require("path");
 const { spawn } = require("child_process");
@@ -24,8 +25,7 @@ async function main() {
     throw new NeutralExitError();
   }
 
-  const commitPattern =
-    getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
+  const commitPattern = getEnv("COMMIT_PATTERN") || commitRegex;
 
   const { name, email } = eventObj.repository.owner;
 
