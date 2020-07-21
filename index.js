@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const process = require("process");
-const { join, dirname } = require("path");
+const { join } = require("path");
 const { spawn } = require("child_process");
 const { readFile } = require("fs");
 
