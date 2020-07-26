@@ -15,15 +15,6 @@ async function main() {
     process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json";
   const eventObj = await readJson(eventFile);
 
-  const defaultBranch = getEnv("DEFAULT_BRANCH") || "master";
-
-  if (eventObj.ref !== `refs/heads/${defaultBranch}`) {
-    console.log(
-      `Ref ${eventObj.ref} is not the default branch: ${defaultBranch}`
-    );
-    throw new NeutralExitError();
-  }
-
   const commitPattern =
     getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
 
