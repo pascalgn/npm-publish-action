@@ -12,6 +12,9 @@ inputs:
   tag_message:
     description: The message of the tag that you want to create for the version.
     required: false
+  workspace:
+    description: Custom workspace directory that contains the package.json file.
+    required: false
 
 runs:
   using: docker
