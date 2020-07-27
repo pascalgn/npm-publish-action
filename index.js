@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-const commitRegex = require("./commit-regex.js");
 const process = require("process");
 const { join } = require("path");
 const { spawn } = require("child_process");
 const { readFile } = require("fs");
+
+//This is a common source of truth for both the actual action and unit tests
+const commitRegex = "^v?(\\d+\\.\\d+\\.\\d+(?:-(?:alpha|beta)\\.\\d+)?)$";
 
 async function main() {
   const dir =
@@ -191,3 +193,7 @@ if (require.main === module) {
     }
   });
 }
+
+module.exports = {
+  commitRegex
+};

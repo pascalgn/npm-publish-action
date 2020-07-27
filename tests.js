@@ -1,4 +1,4 @@
-const commitRegex = require("./commit-regex.js");
+const { commitRegex } = require("./index.js");
 const { expect } = require("chai");
 
 const regex = new RegExp(commitRegex);
