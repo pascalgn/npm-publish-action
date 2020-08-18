@@ -30,6 +30,7 @@ jobs:
         tag_message: "v%s"
         commit_pattern: "^Release (\\S+)"
         workspace: "."
+        auto_bump: "true"
       env: # More info about the environment variables in the README
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
@@ -45,6 +46,7 @@ These inputs are optional: that means that if you don't enter them, default valu
 - `tag_message`: the message pattern of the new tag
 - `commit_pattern`: pattern that the commit message needs to follow
 - `workspace`: custom workspace directory that contains the `package.json` file
+- `auto_bump`: allow automatically version bump
 
 ### Environment variables
 

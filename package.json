@@ -1,6 +1,6 @@
 {
   "name": "npm-publish-action",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "GitHub action to automatically publish packages to npm",
   "author": "Pascal",
   "license": "MIT",
@@ -10,6 +10,9 @@
   },
   "scripts": {
     "lint": "eslint ."
+  },
+  "dependencies": {
+    "@actions/core": "^1.1.1"
   },
   "devDependencies": {
     "eslint": "^7.5.0"
