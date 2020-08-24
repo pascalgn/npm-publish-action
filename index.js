@@ -23,8 +23,6 @@ async function main() {
 
   const config = {
     commitPattern,
-    tagName: placeholderEnv("TAG_NAME", "v%s"),
-    tagMessage: placeholderEnv("TAG_MESSAGE", "v%s"),
     tagAuthor: {name, email}
   };
 
@@ -33,17 +31,6 @@ async function main() {
 
 function getEnv(name) {
   return process.env[name] || process.env[`INPUT_${name}`];
-}
-
-function placeholderEnv(name, defaultValue) {
-  const str = getEnv(name);
-  if (!str) {
-    return defaultValue;
-  } else if (!str.includes("%s")) {
-    throw new Error(`missing placeholder in variable: ${name}`);
-  } else {
-    return str;
-  }
 }
 
 async function getVersion(dir) {
@@ -146,32 +133,6 @@ async function gitSetup(dir, config) {
   const {name, email} = config.tagAuthor;
   await run(dir, "git", "config", "user.name", name);
   await run(dir, "git", "config", "user.email", email);
-}
-
-async function createTag(dir, config, version) {
-  const tagName = config.tagName.replace(/%s/g, version);
-  const tagMessage = config.tagMessage.replace(/%s/g, version);
-
-  const tagExists = await run(
-    dir,
-    "git",
-    "rev-parse",
-    "-q",
-    "--verify",
-    `refs/tags/${tagName}`
-  ).catch(e =>
-    e instanceof ExitError && e.code === 1 ? false : Promise.reject(e)
-  );
-
-  if (tagExists) {
-    console.log(`Tag already exists: ${tagName}`);
-    throw new NeutralExitError();
-  }
-
-  await run(dir, "git", "tag", "-a", "-m", tagMessage, tagName);
-  await run(dir, "git", "push", "origin", `refs/tags/${tagName}`);
-
-  console.log("Tag has been created successfully:", tagName);
 }
 
 async function addBuiltPackage(dir) {

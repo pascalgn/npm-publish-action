@@ -1,12 +1,15 @@
 {
-  "name": "npm-publish-action",
+  "name": "tag-gh-publish-action",
   "version": "0.0.2",
-  "description": "GitHub action to automatically publish packages to npm",
+  "description": "GitHub action to automatically publish packages to github repo tag",
   "author": "Pascal",
+  "contributors": [
+    "tonthanhhung"
+  ],
   "license": "MIT",
   "private": true,
   "bin": {
-    "npm-publish-action": "./index.js"
+    "tag-gh-publish-action": "./index.js"
   },
   "scripts": {
     "lint": "eslint ."
