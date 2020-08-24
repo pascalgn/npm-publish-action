@@ -11,4 +11,4 @@ COPY . /tmp/src/
 
 RUN yarn global add --production true "file:/tmp/src" && rm -rf /tmp/src
 
-ENTRYPOINT [ "tag-gh-pubish-action" ]
+ENTRYPOINT [ "tag-gh-publish-action" ]
