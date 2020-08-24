@@ -24,7 +24,7 @@ jobs:
       with:
         node-version: 10.0.0
     - name: Publish if version has been updated
-      uses: tonthanhhung/tag-gh-publish-action@f1eb478
+      uses: tonthanhhung/tag-gh-publish-action@3f9df2b
       env: # More info about the environment variables in the README
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated        
 ```
