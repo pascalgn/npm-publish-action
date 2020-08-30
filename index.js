@@ -7,7 +7,7 @@ const { readFile } = require("fs");
 
 async function main() {
   const dir =
-    process.env.WORKSPACE ||
+    getEnv("WORKSPACE") ||
     process.env.GITHUB_WORKSPACE ||
     "/github/workspace";
 
