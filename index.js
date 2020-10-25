@@ -122,14 +122,20 @@ async function createTag(dir, config, version) {
 }
 
 async function publishPackage(dir, config, version) {
-  await run(
+  const args = [
     dir,
     "yarn",
     "publish",
     "--non-interactive",
     "--new-version",
     version
-  );
+  ];
+
+  // publish with --tag
+  const tagName = version.match(/([a-zA-Z]+)/);
+  if (tagName) { args.push('--tag', tagName[1]); }
+
+  await run(...args);
 
   console.log("Version has been published successfully:", version);
 }
