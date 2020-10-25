@@ -30,6 +30,8 @@ jobs:
         tag_message: "v%s"
         commit_pattern: "^Release (\\S+)"
         workspace: "."
+        publish_command: "yarn"
+        publish_args: "--non-interactive"
       env: # More info about the environment variables in the README
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings

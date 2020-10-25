@@ -7,9 +7,7 @@ const { readFile } = require("fs");
 
 async function main() {
   const dir =
-    getEnv("WORKSPACE") ||
-    process.env.GITHUB_WORKSPACE ||
-    "/github/workspace";
+    getEnv("WORKSPACE") || process.env.GITHUB_WORKSPACE || "/github/workspace";
 
   const eventFile =
     process.env.GITHUB_EVENT_PATH || "/github/workflow/event.json";
@@ -18,13 +16,18 @@ async function main() {
   const commitPattern =
     getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
 
+  const publishCommand = getEnv("PUBLISH_COMMAND") || "yarn";
+  const publishArgs = arrayEnv("PUBLISH_ARGS");
+
   const { name, email } = eventObj.repository.owner;
 
   const config = {
     commitPattern,
     tagName: placeholderEnv("TAG_NAME", "v%s"),
     tagMessage: placeholderEnv("TAG_MESSAGE", "v%s"),
-    tagAuthor: { name, email }
+    tagAuthor: { name, email },
+    publishCommand,
+    publishArgs
   };
 
   await processDirectory(dir, config, eventObj.commits);
@@ -43,6 +46,11 @@ function placeholderEnv(name, defaultValue) {
   } else {
     return str;
   }
+}
+
+function arrayEnv(name) {
+  const str = getEnv(name);
+  return str ? str.split(" ") : [];
 }
 
 async function processDirectory(dir, config, commits) {
@@ -122,14 +130,16 @@ async function createTag(dir, config, version) {
 }
 
 async function publishPackage(dir, config, version) {
-  await run(
-    dir,
-    "yarn",
-    "publish",
-    "--non-interactive",
-    "--new-version",
-    version
-  );
+  const { publishCommand, publishArgs } = config;
+
+  const cmd =
+    publishCommand === "yarn"
+      ? ["yarn", "publish", "--non-interactive", "--new-version", version]
+      : publishCommand === "npm"
+      ? ["npm", "publish"]
+      : [publishCommand];
+
+  await run(dir, ...cmd, ...publishArgs);
 
   console.log("Version has been published successfully:", version);
 }
