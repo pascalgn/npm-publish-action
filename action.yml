@@ -15,6 +15,12 @@ inputs:
   workspace:
     description: Custom workspace directory that contains the package.json file.
     required: false
+  publish_command:
+    description: Custom publish command.
+    required: false
+  publish_args:
+    description: Publish command arguments.
+    required: false
 
 runs:
   using: docker

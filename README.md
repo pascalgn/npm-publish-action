@@ -47,6 +47,8 @@ These inputs are optional: that means that if you don't enter them, default valu
 - `tag_message`: the message pattern of the new tag
 - `commit_pattern`: pattern that the commit message needs to follow
 - `workspace`: custom workspace directory that contains the `package.json` file
+- `publish_command`: custom publish command (defaults to `yarn`)
+- `publish_args`: publish command arguments (for example `--prod --verbose`, defaults to empty)
 
 ### Environment variables
 
