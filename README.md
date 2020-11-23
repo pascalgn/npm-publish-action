@@ -18,11 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@master
-    - name: Set up Node.js
-      uses: actions/setup-node@master
-      with:
-        node-version: 10.0.0
+      uses: actions/checkout@v2
     - name: Publish if version has been updated
       uses: pascalgn/npm-publish-action@1.3.5
       with: # All of theses inputs are optional
