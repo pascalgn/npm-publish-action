@@ -53,6 +53,7 @@ These inputs are optional: that means that if you don't enter them, default valu
 
 ## Related projects
 
+- [npm-publish](https://github.com/JS-DevTools/npm-publish) is a similar project
 - [version-check](https://github.com/EndBug/version-check) allows to define custom workflows based on version changes
 
 ## License
