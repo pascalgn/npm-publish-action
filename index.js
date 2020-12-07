@@ -16,6 +16,8 @@ async function main() {
   const commitPattern =
     getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
 
+  const createTagFlag = getEnv("CREATE_TAG") !== "false";
+  
   const publishCommand = getEnv("PUBLISH_COMMAND") || "yarn";
   const publishArgs = arrayEnv("PUBLISH_ARGS");
 
@@ -23,6 +25,7 @@ async function main() {
 
   const config = {
     commitPattern,
+    createTag: createTagFlag,
     tagName: placeholderEnv("TAG_NAME", "v%s"),
     tagMessage: placeholderEnv("TAG_MESSAGE", "v%s"),
     tagAuthor: { name, email },
@@ -69,7 +72,10 @@ async function processDirectory(dir, config, commits) {
 
   checkCommit(config, commits, version);
 
-  await createTag(dir, config, version);
+  if (config.createTag) {
+    await createTag(dir, config, version);  
+  }
+  
   await publishPackage(dir, config, version);
 
   console.log("Done.");
