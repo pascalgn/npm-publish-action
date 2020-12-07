@@ -24,6 +24,7 @@ jobs:
       with: # All of theses inputs are optional
         tag_name: "v%s"
         tag_message: "v%s"
+        create_tag: "true"
         commit_pattern: "^Release (\\S+)"
         workspace: "."
         publish_command: "yarn"
@@ -41,6 +42,7 @@ These inputs are optional: that means that if you don't enter them, default valu
 
 - `tag_name`: the name pattern of the new tag
 - `tag_message`: the message pattern of the new tag
+- `create_tag`: whether to create a git tag or not (defaults to `"true"`)
 - `commit_pattern`: pattern that the commit message needs to follow
 - `workspace`: custom workspace directory that contains the `package.json` file
 - `publish_command`: custom publish command (defaults to `yarn`)
