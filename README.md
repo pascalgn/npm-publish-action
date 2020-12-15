@@ -20,7 +20,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     - name: Publish if version has been updated
-      uses: pascalgn/npm-publish-action@1.3.5
+      uses: pascalgn/npm-publish-action@1.3.6
       with: # All of theses inputs are optional
         tag_name: "v%s"
         tag_message: "v%s"
