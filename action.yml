@@ -25,6 +25,14 @@ inputs:
     description: Publish command arguments.
     required: false
 
+outputs:
+  changed:
+    description: Whether the version has changed in the examined commits
+  version:
+    description: The detected version number
+  commit:
+    description: The SHA of the commit where the version change has been detected
+
 runs:
   using: docker
   image: Dockerfile
