@@ -17,7 +17,7 @@ async function main() {
     getEnv("COMMIT_PATTERN") || "^(?:Release|Version) (\\S+)";
 
   const createTagFlag = getEnv("CREATE_TAG") !== "false";
-  
+
   const publishCommand = getEnv("PUBLISH_COMMAND") || "yarn";
   const publishArgs = arrayEnv("PUBLISH_ARGS");
 
@@ -70,13 +70,17 @@ async function processDirectory(dir, config, commits) {
 
   const { version } = packageObj;
 
-  checkCommit(config, commits, version);
+  const foundCommit = checkCommit(config, commits, version);
 
   if (config.createTag) {
-    await createTag(dir, config, version);  
+    await createTag(dir, config, version);
   }
-  
+
   await publishPackage(dir, config, version);
+
+  setOutput("changed", "true");
+  setOutput("version", version);
+  setOutput("commit", foundCommit.sha);
 
   console.log("Done.");
 }
@@ -86,7 +90,7 @@ function checkCommit(config, commits, version) {
     const match = commit.message.match(config.commitPattern);
     if (match && match[1] === version) {
       console.log(`Found commit: ${commit.message}`);
-      return;
+      return commit;
     }
   }
   throw new NeutralExitError(`No commit found for version: ${version}`);
@@ -150,6 +154,11 @@ async function publishPackage(dir, config, version) {
   console.log("Version has been published successfully:", version);
 }
 
+function setOutput(name, value = "") {
+  const out = `name=${encodeURIComponent(name)}::${encodeURIComponent(value)}`;
+  console.log(`::set-output ${out}`);
+}
+
 function run(cwd, command, ...args) {
   console.log("Executing:", command, args.join(" "));
   return new Promise((resolve, reject) => {
@@ -188,6 +197,7 @@ class NeutralExitError extends Error {}
 
 if (require.main === module) {
   main().catch(e => {
+    setOutput("changed", false);
     if (e instanceof NeutralExitError) {
       // GitHub removed support for neutral exit code:
       // https://twitter.com/ethomson/status/1163899559279497217
