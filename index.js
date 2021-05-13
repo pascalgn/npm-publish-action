@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const process = require("process");
-const os = require("os");
 const { join } = require("path");
 const { spawn } = require("child_process");
 const { readFile } = require("fs");
@@ -79,9 +78,10 @@ async function processDirectory(dir, config, commits) {
 
   await publishPackage(dir, config, version);
 
-  setOutput('changed', true)
-  setOutput('version', version)
-  setOutput('commit', foundCommit.id)
+  setOutput("changed", "true");
+  setOutput("version", version);
+  setOutput("commit", foundCommit.sha);
+
   console.log("Done.");
 }
 
@@ -154,25 +154,9 @@ async function publishPackage(dir, config, version) {
   console.log("Version has been published successfully:", version);
 }
 
-function setOutput(name, value = '') {
-  if (typeof name !== "string") name = JSON.stringify(name);
-  if (typeof value !== "string") value = JSON.stringify(value);
-  
-  const cmd = `::set-output name=${escapeProperty(name)}::${escapeData(value)}`;
-  process.stdout.write(cmd + os.EOL);
-}
-
-function escapeProperty(s) {
-  return s
-    .replace(/%/g, "%25")
-    .replace(/\r/g, "%0D")
-    .replace(/\n/g, "%0A")
-    .replace(/:/g, "%3A")
-    .replace(/,/g, "%2C");
-}
-
-function escapeData(s) {
-  return s.replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+function setOutput(name, value = "") {
+  const out = `name=${encodeURIComponent(name)}::${encodeURIComponent(value)}`;
+  console.log(`::set-output ${out}`);
 }
 
 function run(cwd, command, ...args) {
@@ -213,7 +197,7 @@ class NeutralExitError extends Error {}
 
 if (require.main === module) {
   main().catch(e => {
-    setOutput('changed', false)
+    setOutput("changed", false);
     if (e instanceof NeutralExitError) {
       // GitHub removed support for neutral exit code:
       // https://twitter.com/ethomson/status/1163899559279497217
