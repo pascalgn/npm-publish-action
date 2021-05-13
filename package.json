@@ -1,6 +1,6 @@
 {
   "name": "npm-publish-action",
-  "version": "1.3.7",
+  "version": "0.0.1",
   "description": "GitHub action to automatically publish packages to npm",
   "author": "Pascal",
   "license": "MIT",
