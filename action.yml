@@ -19,7 +19,7 @@ inputs:
     description: Custom workspace directory that contains the package.json file.
     required: false
   recursive:
-    description: Look for multiple packages in the specific workspace folder and publish them all
+    description: Look for multiple packages in the specific workspace folder and publish all
     required: false
   publish_command:
     description: Custom publish command.
