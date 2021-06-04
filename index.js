@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 const process = require("process");
-const { join } = require("path");
+const { join, dirname } = require("path");
 const { spawn } = require("child_process");
 const { readFile } = require("fs");
+var glob = require("glob");
 
 async function main() {
   const dir =
@@ -32,8 +33,17 @@ async function main() {
     publishCommand,
     publishArgs
   };
-
-  await processDirectory(dir, config, eventObj.commits);
+  if (getEnv("RECURSIVE")) {
+    const files = glob.sync(join(dir, "/**/package.json"));
+    if (files.length == 0) {
+      return console.error("Invalid workspace", dir);
+    }
+    for (const file of files) {
+      await processDirectory(dirname(file), config, eventObj.commits);
+    }
+  } else {
+    await processDirectory(dir, config, eventObj.commits);
+  }
 }
 
 function getEnv(name) {

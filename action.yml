@@ -1,6 +1,6 @@
-name: Publish to npm
-author: pascalgn
-description: Automatically publish new versions to npm
+name: Publish to npm monorepo
+author: wtrocki
+description: Automatically publish new versions to npm for multiple packages in repo
 
 inputs:
   commit_pattern:
@@ -17,6 +17,9 @@ inputs:
     required: false
   workspace:
     description: Custom workspace directory that contains the package.json file.
+    required: false
+  recursive:
+    description: Look for multiple packages in the specific workspace folder and publish all
     required: false
   publish_command:
     description: Custom publish command.

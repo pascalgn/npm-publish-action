@@ -1,4 +1,4 @@
-# npm-publish-action
+# npm-publish-repo action
 
 GitHub action to automatically publish packages to npm.
 
@@ -47,6 +47,8 @@ These inputs are optional: that means that if you don't enter them, default valu
 - `workspace`: custom workspace directory that contains the `package.json` file
 - `publish_command`: custom publish command (defaults to `yarn`)
 - `publish_args`: publish command arguments (for example `--prod --verbose`, defaults to empty)
+- `recursive`: iterate thru folder to find and publish multiple packages
+
 
 ### Environment variables
 
