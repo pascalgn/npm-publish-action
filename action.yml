@@ -1,6 +1,6 @@
-name: Publish to npm
-author: pascalgn
-description: Automatically publish new versions to npm
+name: Publish to npm monorepo
+author: wtrocki
+description: Automatically publish new versions to npm for multiple packages in repo
 
 inputs:
   commit_pattern:
