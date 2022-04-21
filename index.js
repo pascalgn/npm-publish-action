@@ -68,6 +68,16 @@ async function processDirectory(dir, config, commits) {
     throw new Error("missing version field!");
   }
 
+  await run(
+    dir,
+    "git",
+    "config",
+    "--global",
+    "--add",
+    "safe.directory",
+    "/github/workspace"
+  );
+
   const { version } = packageObj;
 
   const foundCommit = checkCommit(config, commits, version);
