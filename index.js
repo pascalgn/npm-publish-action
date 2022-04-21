@@ -68,6 +68,16 @@ async function processDirectory(dir, config, commits) {
     throw new Error("missing version field!");
   }
 
+  await run(
+    dir,
+    "git",
+    "config",
+    "--global",
+    "--add",
+    "safe.directory",
+    "/github/workspace"
+  );
+
   const { version } = packageObj;
 
   const foundCommit = checkCommit(config, commits, version);
@@ -113,19 +123,6 @@ async function createTag(dir, config, version) {
   const tagName = config.tagName.replace(/%s/g, version);
   const tagMessage = config.tagMessage.replace(/%s/g, version);
 
-  // required for git 2.35.2+
-  const trustDir = await run(
-    dir,
-    "git",
-    "config",
-    "--global",
-    "--add",
-    "safe.directory",
-    "/github/workspace"
-  ).catch(e =>
-    e instanceof ExitError && e.code === 1 ? false : Promise.reject(e)
-  );
-  
   const tagExists = await run(
     dir,
     "git",
