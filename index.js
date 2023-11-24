@@ -3,7 +3,8 @@
 const process = require("process");
 const { join } = require("path");
 const { spawn } = require("child_process");
-const { readFile } = require("fs");
+const { readFile, appendFileSync } = require("fs");
+const { EOL } = require("os");
 
 async function main() {
   const dir =
@@ -165,8 +166,8 @@ async function publishPackage(dir, config, version) {
 }
 
 function setOutput(name, value = "") {
-  const out = `name=${encodeURIComponent(name)}::${encodeURIComponent(value)}`;
-  console.log(`::set-output ${out}`);
+  const output = process.env['GITHUB_OUTPUT']
+  appendFileSync(output, `${key}=${value}${EOL}`)
 }
 
 function run(cwd, command, ...args) {
